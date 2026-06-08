@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Beat Extractor</title>
+</head>
+<body>
+
+<h2>Upload Song to Extract Beats</h2>
+
+<input type="file" id="audioFile" />
+<button onclick="upload()">Upload</button>
+
+<h3>Result:</h3>
+<pre id="output"></pre>
+
+<script>
+async function upload() {
+    const fileInput = document.getElementById("audioFile");
+    const file = fileInput.files[0];
+
+    if (!file) {
+        alert("Select a file first");
+        return;
+    }
+
+    let formData = new FormData();
+    formData.append("file", file);
+
+    let res = await fetch("/upload", {
+        method: "POST",
+        body: formData
+    });
+
+    let data = await res.json();
+
+    document.getElementById("output").textContent =
+        JSON.stringify(data, null, 2);
+}
+</script>
+
+</body>
+</html>
